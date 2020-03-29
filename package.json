@@ -16,6 +16,7 @@
     "mobx-react": "^6.1.8",
     "react": "latest",
     "react-dom": "latest",
+    "react-lazy-load-image-component": "^1.4.1",
     "react-scripts": "latest"
   },
   "browserslist": {
