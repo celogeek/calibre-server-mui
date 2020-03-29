@@ -1,15 +1,26 @@
-import React, { Component } from 'react';
+import React from 'react';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { withStyles } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import PropTypes from 'prop-types';
 
-class Book extends Component {
-  render() {
-    const {classes, meta, thumb} = this.props
+const useStyles = makeStyles(() => ({
+    icon: {
+        color: 'rgba(255, 255, 255, 0.54)',
+    },
+    readStatus: ({meta}) => (meta['#read']) ? {filter: 'sepia(0.8) brightness(0.8)'} : {},
+    subtitle: {
+        listStyleType: 'none',
+        paddingInlineStart: 0,
+    }
+}));
+
+function Book(props) {
+    const {meta, thumb} = props
+    const classes = useStyles(props)
     const {title, series, series_index, author_sort} = meta
     const subtitle = <ul className={classes.subtitle}>
         <li>by: {author_sort}</li>
@@ -26,11 +37,9 @@ class Book extends Component {
         <LazyLoadImage src={thumb} alt={title} effect="blur" className={classes.readStatus} key='lazyimage'/>,
         <GridListTileBar title={title} subtitle={subtitle} actionIcon={actionIcon} key='titlebar'/>
     ]
-  }
 }
 
 Book.propTypes = {
-    classes: PropTypes.object.isRequired,
     meta: PropTypes.shape({
         title: PropTypes.string,
         series: PropTypes.string,
@@ -41,16 +50,4 @@ Book.propTypes = {
     thumb: PropTypes.string,
 }
 
-const useStyles = {
-    icon: {
-        color: 'rgba(255, 255, 255, 0.54)',
-    },
-    readStatus: ({meta}) => (meta['#read']) ? {filter: 'sepia(0.8) brightness(0.8)'} : {},
-    subtitle: {
-        listStyleType: 'none',
-        paddingInlineStart: 0,
-    }
-};
-
-
-export default withStyles(useStyles)(Book)
+export default Book
