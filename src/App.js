@@ -17,7 +17,7 @@ class App extends Component {
     return (
       <Container>
         <Box my={4}>
-          <Books store={store} />
+          <Books store={store} cols={4} />
           {store.hasMore && <Button onClick={this.loadMore}>Load more</Button>}
         </Box>
       </Container>
