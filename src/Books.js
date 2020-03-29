@@ -17,14 +17,14 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
   },
-  gridList: (cols) => ({
+  gridList: ({cols}) => ({
       width: 335 * cols,
   }),
 }));
 
 
 function Books({store, cols}) {
-  const classes = useStyles()
+  const classes = useStyles({cols})
 
   return (
     <div className={classes.root}>
