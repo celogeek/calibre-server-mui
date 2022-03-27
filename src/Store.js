@@ -1,18 +1,23 @@
-import querystring from 'querystring'
-import { observable, decorate, computed } from "mobx"
+import { observable, computed, makeObservable } from "mobx"
 
 class Store {
     constructor() {
+        makeObservable(this, {
+            bookIds: observable,
+            searchResult: observable,
+            hasMore: computed,
+        });
+
         this.bookIds = []
         this.metadata = {}
-        this.searchParams = {
-            library_id: 'Library',
-        }
+        this.searchParams = new URLSearchParams([
+            ["library_id", 'Library'],
+        ])
         this.searchResult = {}
     }
 
     async get(route, params) {
-        const data = await fetch('/api/' + route + '?' + querystring.stringify(params))
+        const data = await fetch('/api/' + route + '?' + params)
         return data.json()
     }
 
@@ -38,7 +43,7 @@ class Store {
     }
 
     async search() {
-        const data = await this.get('books-init', this.searchParams)
+        const data = await this.get('books-init', this.searchParams.toString())
         this.searchResult = this.updateData(data)
     }
     
@@ -52,11 +57,5 @@ class Store {
         return !this.searchResult.total_num || this.bookIds.length < this.searchResult.total_num
     }
 }
-
-decorate(Store,{
-    bookIds: observable,
-    searchResult: observable,
-    hasMore: computed,
-})
 
 export default Store
